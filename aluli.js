@@ -1,17 +1,57 @@
-// Seleccionar elementos del DOM
 const form = document.getElementById('inventory-form');
 const tableBody = document.querySelector('#inventory-table tbody');
+const submitBtn = form.querySelector('button[type="submit"]');
 
-// --- 1. FUNCIÓN PARA MOSTRAR LOS DATOS ---
+// Variable para saber si estamos editando y qué ID estamos editando
+let editMode = false;
+let editId = null;
+
+document.addEventListener('DOMContentLoaded', mostrarInventario);
+
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById('name').value;
+    const cantidad = parseFloat(document.getElementById('quantity').value);
+    const precio = parseFloat(document.getElementById('price').value);
+
+    let inventario = JSON.parse(localStorage.getItem('datosInventario')) || [];
+
+    if (editMode) {
+        // MODO ACTUALIZAR: Buscamos el producto por ID y lo modificamos
+        inventario = inventario.map(item => {
+            if (item.id === editId) {
+                return { ...item, nombre, cantidad, precio };
+            }
+            return item;
+        });
+        
+        // Resetear el botón y el estado
+        editMode = false;
+        editId = null;
+        submitBtn.innerText = "Agregar al Inventario";
+        submitBtn.style.backgroundColor = "var(--purpura-aluli)";
+    } else {
+        // MODO AGREGAR: Creamos uno nuevo
+        const nuevoProducto = {
+            id: Date.now(),
+            nombre,
+            cantidad,
+            precio
+        };
+        inventario.push(nuevoProducto);
+    }
+
+    localStorage.setItem('datosInventario', JSON.stringify(inventario));
+    form.reset();
+    mostrarInventario();
+});
+
 function mostrarInventario() {
-    // Obtenemos lo que haya en LocalStorage. Si está vacío, creamos un array vacío []
     const inventario = JSON.parse(localStorage.getItem('datosInventario')) || [];
-    
-    // Limpiar la tabla antes de volver a llenarla
     tableBody.innerHTML = '';
 
-    // Dibujar cada fila
-    inventario.forEach((item, index) => {
+    inventario.forEach((item) => {
         const total = (item.cantidad * item.precio).toFixed(2);
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -19,51 +59,45 @@ function mostrarInventario() {
             <td>${item.cantidad}</td>
             <td>$${item.precio}</td>
             <td>$${total}</td>
-            <td><button onclick="eliminarProducto(${index})" style="background:#e74c3c; color:white; border:none; padding:5px; cursor:pointer;">Borrar</button></td>
+            <td>
+                <button class="edit-btn" onclick="prepararEdicion(${item.id})">Editar</button>
+                <button class="delete-btn" onclick="eliminarProducto(${item.id})">Borrar</button>
+            </td>
         `;
         tableBody.appendChild(row);
     });
 }
 
-// --- 2. EVENTO PARA GUARDAR ---
-form.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    // Crear el objeto del nuevo producto
-    const nuevoProducto = {
-        nombre: document.getElementById('name').value,
-        cantidad: parseFloat(document.getElementById('quantity').value),
-        precio: parseFloat(document.getElementById('price').value)
-    };
-
-    // 1. Traer lo que ya existe
-    const inventarioActual = JSON.parse(localStorage.getItem('datosInventario')) || [];
-    
-    // 2. Empujar el nuevo producto al array
-    inventarioActual.push(nuevoProducto);
-    
-    // 3. Guardar de nuevo en LocalStorage (convertido a texto)
-    localStorage.setItem('datosInventario', JSON.stringify(inventarioActual));
-
-    // Limpiar formulario y refrescar tabla
-    form.reset();
-    mostrarInventario();
-});
-
-// --- 3. FUNCIÓN PARA ELIMINAR ---
-window.eliminarProducto = function(index) {
+// Función que sube los datos al formulario
+window.prepararEdicion = function(id) {
     const inventario = JSON.parse(localStorage.getItem('datosInventario')) || [];
-    
-    // Quitar el elemento del array usando su posición (index)
-    inventario.splice(index, 1);
-    
-    // Guardar la lista actualizada
-    localStorage.setItem('datosInventario', JSON.stringify(inventario));
-    
-    // Refrescar tabla
-    mostrarInventario();
+    const producto = inventario.find(item => item.id === id);
+
+    if (producto) {
+        document.getElementById('name').value = producto.nombre;
+        document.getElementById('quantity').value = producto.cantidad;
+        document.getElementById('price').value = producto.precio;
+
+        // Cambiar apariencia del botón para indicar edición
+        editMode = true;
+        editId = id;
+        submitBtn.innerText = "Actualizar Producto";
+        submitBtn.style.backgroundColor = "var(--cian-aluli)";
+        document.getElementById('name').focus();
+    }
 };
 
-// --- 4. EJECUTAR AL CARGAR LA PÁGINA ---
-// Esto asegura que al abrir la web, los datos aparezcan
-mostrarInventario();
+window.eliminarProducto = function(id) {
+    let inventario = JSON.parse(localStorage.getItem('datosInventario')) || [];
+    inventario = inventario.filter(item => item.id !== id);
+    localStorage.setItem('datosInventario', JSON.stringify(inventario));
+    mostrarInventario();
+    
+    // Si borramos mientras editamos, reseteamos el formulario
+    if(editMode && editId === id) {
+        form.reset();
+        editMode = false;
+        submitBtn.innerText = "Agregar al Inventario";
+    }
+};
+

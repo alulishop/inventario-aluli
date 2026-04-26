@@ -171,3 +171,19 @@ tr:hover {
 body {
     padding-top: 100px; /* Espacio para el header fixed */
 }
+
+.edit-btn {
+    background-color: transparent;
+    color: var(--cian-aluli);
+    border: 1px solid var(--cian-aluli);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: all 0.3s;
+}
+
+.edit-btn:hover {
+    background-color: var(--cian-aluli);
+    color: var(--fondo-oscuro);
+}
