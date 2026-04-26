@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario aluli Shop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="nav-container">
+            <div class="logo">Inventario <span> Aluli</span></div>
+            <ul class="nav-links">
+                <li><a href="https://alulishop.github.io/aluli-shop/" class="catalog-link">Ir al Catálogo</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Gestión de Inventario</h1>
+        
+        <form id="inventory-form">
+            <input type="text" id="name" placeholder="Nombre del producto" required>
+            <input type="number" id="quantity" placeholder="Cantidad" required>
+            <input type="number" id="price" placeholder="Precio ($)" step="0.01" required>
+            <button type="submit">Agregar al Inventario</button>
+        </form>
+
+        <table id="inventory-table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+    <script src="aluli.js"></script>
+</body>
+</html>

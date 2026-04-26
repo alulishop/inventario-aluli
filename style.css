@@ -1,0 +1,173 @@
+:root {
+    --fondo-oscuro: #121212;
+    --fondo-carta: #1e1e1e;
+    --purpura-aluli: #9c27b0;
+    --cian-aluli: #00bcd4;
+    --texto-claro: #ffffff;
+    --texto-suave: #b0b0b0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--fondo-oscuro);
+    color: var(--texto-claro);
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    margin: 0;
+}
+
+.container {
+    background-color: var(--fondo-carta);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 900px;
+    border: 1px solid #333;
+}
+
+h1 {
+    text-align: center;
+    color: var(--cian-aluli);
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Estilo del Formulario */
+form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+input {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    padding: 12px;
+    border-radius: 6px;
+    color: var(--texto-claro);
+    outline: none;
+    transition: border 0.3s;
+}
+
+input:focus {
+    border-color: var(--purpura-aluli);
+}
+
+button[type="submit"] {
+    background-color: var(--purpura-aluli);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.3s, transform 0.2s;
+}
+
+button[type="submit"]:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Estilo de la Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th {
+    background-color: #252525;
+    color: var(--cian-aluli);
+    text-align: left;
+    padding: 15px;
+    border-bottom: 2px solid var(--purpura-aluli);
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #333;
+    color: var(--texto-suave);
+}
+
+tr:hover {
+    background-color: #252525;
+}
+
+/* Botón Eliminar */
+.delete-btn {
+    background-color: transparent;
+    color: #ff5252;
+    border: 1px solid #ff5252;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #ff5252;
+    color: white;
+}
+
+/* Estilos para el Header */
+.main-header {
+    background-color: var(--fondo-carta);
+    border-bottom: 1px solid var(--purpura-aluli);
+    padding: 15px 0;
+    width: 100%;
+    position: fixed; /* Lo mantiene arriba al hacer scroll */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--texto-claro);
+}
+
+.logo span {
+    color: var(--purpura-aluli);
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.catalog-link {
+    color: var(--cian-aluli);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: 1px solid var(--cian-aluli);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.catalog-link:hover {
+    background-color: var(--cian-aluli);
+    color: var(--fondo-oscuro);
+    box-shadow: 0 0 10px var(--cian-aluli);
+}
+
+/* Ajuste para que el contenedor no quede debajo del header */
+body {
+    padding-top: 100px; /* Espacio para el header fixed */
+}
